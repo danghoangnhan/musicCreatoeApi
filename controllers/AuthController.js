@@ -18,33 +18,37 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  * @param {*} req 
  * @param {*} res 
  */
-let login = async function (req, res) {// ()
+let login = async function (req, res) {
   try {
-    console.log(req.body);
-    var result;
-    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password+'"';
-        db.query(sql,function(err, row, fields){
-          if (err) {
-            return console.log('Error1');
-          } else if (!row.length) {
-            return console.log('Error2');
-          } else if (!row[0].something) {
-            return console.log('Error3');
-          }
 
-        })
+    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password+'" LIMIT 1';
+
+    var result = await dbQuery(sql);
+
+    console.log(result);
+    
+    if(result.length==0){
+      return res.status(403).json({
+        message: 'Invalid login.',
+      });
+    }
+
     const userData = {
-      id: "",
-      username: "",
-      password:"",
+      _id: result[0].id,
+      name: result[0].username,
+      password: result[0].password
     };
+
+
+    console.log(userData);
     const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
     const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
     tokenList[refreshToken] = { accessToken, refreshToken };
     debug(`Gửi Token và Refresh Token về cho client...`);
     return res.status(200).json({accessToken, refreshToken});
   } catch (error) {
-    return res.status(500).json(error,description="login failed");
+    debug(error);
+    return res.status(501).json(error);
   }
 }
 
@@ -76,6 +80,28 @@ let refreshToken = async (req, res) => {
     });
   }
 };
+
+function dbQuery(databaseQuery) {
+  return new Promise(data => {
+    db.query(databaseQuery, function (error, result) { // change db->connection for your code
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+      try {
+        console.log(result);
+
+        data(result);
+
+      } catch (error) {
+        data({});
+        throw error;
+      }
+
+    });
+  });
+
+}
 
 module.exports = {
   login: login,
