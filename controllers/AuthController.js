@@ -48,23 +48,9 @@ let login = async (req, res) => {
     let sql = 'SELECT * FROM user WHERE account = ${req.body.account} AND password = ${req.body.password}'
         db.query(sql, (err, response) => {
             if (err) throw err
-            else{
-              const accessToken = await jwtHelper.generateToken(userFakeData, accessTokenSecret, accessTokenLife);
-              tokenList[refreshToken] = {accessToken, refreshToken};
-
-            }
             res.json(response)
         })
-
-    //debug(`Thực hiện tạo mã Token, [thời gian sống 1 giờ.]`);
-    
-    
-    //debug(`Thực hiện tạo mã Refresh Token, [thời gian sống 10 năm] =))`);
-    //const refreshToken = await jwtHelper.generateToken(userFakeData, refreshTokenSecret, refreshTokenLife);
-
-    
-    //debug(`Gửi Token và Refresh Token về cho client...`);
-    return res.status(200).json({accessToken, refreshToken});// return res.status(200).json({accessToken});// if new/old token same res new token
+    return res.status(200).json({accessToken, refreshToken});
   } catch (error) {
     return res.status(500).json(error);
   }
