@@ -27,30 +27,29 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  * @param {*} req 
  * @param {*} res 
  */
-let login = async (req, res) => {
+let login = async function (req, res) {// ()
   try {
     debug(`req sucess with: ${req.body.account} and Password: ${req.body.password}\n`);
     console.log(req.body.account+" "+req.body.password);
-    // Mình sẽ comment mô tả lại một số bước khi làm thực tế cho các bạn như sau nhé:
-    // - Đầu tiên Kiểm tra xem email người dùng đã tồn tại trong hệ thống hay chưa?
-    // - Nếu chưa tồn tại thì reject: User not found.
-    // - Nếu tồn tại user thì sẽ lấy password mà user truyền lên, băm ra và so sánh với mật khẩu của user lưu trong Database
-    // - Nếu password sai thì reject: Password is incorrect.
-    // - Nếu password đúng thì chúng ta bắt đầu thực hiện tạo mã JWT và gửi về cho người dùng.
-    // Trong ví dụ demo này mình sẽ coi như tất cả các bước xác thực ở trên đều ok, mình chỉ xử lý phần JWT trở về sau thôi nhé:
-    // debug(`Thực hiện fake thông tin user...`);
-
-    // const userFakeData = {
-    //   _id: "1234-5678-910JQK-tqd",
-    //   name: "Trung Quân",
-    //   email: req.body.email,
-    // };
     let sql = 'SELECT * FROM user WHERE account = ${req.body.account} AND password = ${req.body.password}'
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
         })
+<<<<<<< Updated upstream
     return res.status(200).json({accessToken, refreshToken});
+=======
+
+    //debug(`Thực hiện tạo m Token, [thời gian sống 1 giờ.]`);
+    
+    
+    //debug(`Thực hiện tạo mã Refresh Token, [thời gian sống 10 năm] =))`);
+    //const refreshToken = await jwtHelper.generateToken(userFakeData, refreshTokenSecret, refreshTokenLife);
+
+    
+    //debug(`Gửi Token và Refresh Token về cho client...`);
+    return res.status(200).json({accessToken, refreshToken});// return res.status(200).json({accessToken});// if new/old token same res new token
+>>>>>>> Stashed changes
   } catch (error) {
     return res.status(500).json(error);
   }
