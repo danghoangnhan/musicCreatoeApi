@@ -1,3 +1,13 @@
+// login, password_token
+
+/*
+var req = [header: "......",
+          body: {
+            user: "user1",
+            password: "123456"
+          }]
+*/
+
 /**
  * Created by trungquandev.com's author on 16/10/2019.
  * src/controllers/auth.js
