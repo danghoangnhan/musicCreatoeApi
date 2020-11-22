@@ -15,6 +15,8 @@ let initAPIs = (app) => {
   router.post("/refresh-token", AuthController.refreshToken);
 
   router.use(AuthMiddleWare.isAuth);
+
+
   return app.use("/", router);
 }
 
