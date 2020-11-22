@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); // To include a module, use the require() function with the name of the module:
 const app = express();
 const bodyParser = require('body-parser');
 //require('dotenv').load();
