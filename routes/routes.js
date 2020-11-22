@@ -20,9 +20,6 @@ let initAPIs = (app) => {
   router.post("/refresh-token", AuthController.refreshToken);
 
   router.use(AuthMiddleWare.isAuth);
-  router.get("/vehicle",vehiclesCtrl.get);
-  router.get("/command",commandCtrl.get);
-  router.get("/account",accountsCtrl.get);
 
 
   return app.use("/", router);
