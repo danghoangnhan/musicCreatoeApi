@@ -20,6 +20,6 @@ app.use(function(req, res) {
     res.status(404).send({url: req.originalUrl + ' not found'})
 })
 
-app.listen(port);
+app.listen(port, '0.0.0.0');
 
 console.log('RESTful API server started on: ' + port);
