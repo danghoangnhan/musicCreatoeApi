@@ -29,8 +29,9 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  */
 let login = async function (req, res) {// ()
   try {
-    debug(`req sucess with: ${req.body.account} and Password: ${req.body.password}\n`);
-    console.log(req.body.account+" "+req.body.password);
+    //debug(`req sucess with: ${req.body.account} and Password: ${req.body.password}\n`);
+    // console.log(req.body.account+" "+req.body.password);
+    console.log(req);
     let sql = 'SELECT * FROM user WHERE username = ${req.body.account} AND password = ${req.body.password}'
         db.query(sql, (err, response) => {
             if (err) throw err
