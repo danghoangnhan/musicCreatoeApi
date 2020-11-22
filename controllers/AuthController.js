@@ -12,7 +12,7 @@ var req = [header: "......",
  * Created by trungquandev.com's author on 16/10/2019.
  * src/controllers/auth.js
  */
-const jwtHelper = require("../helpers/jwt.helper");
+ const jwtHelper = require("../helpers/jwt.helper");
 const debug = console.log.bind(console);
 const util = require('util')
 const mysql = require('mysql')
@@ -39,14 +39,27 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  */
 let login = async function (req, res) {// ()
   try {
-    //debug(`req sucess with: ${req.body.account} and Password: ${req.body.password}\n`);
+//debug(`req sucess with: ${req.body.account} and Password: ${req.body.password}\n`);
     // console.log(req.body.account+" "+req.body.password);
-    console.log(req);
-    let sql = 'SELECT * FROM user WHERE username = ${req.body.account} AND password = ${req.body.password}'
-        db.query(sql, (err, response) => {
-            if (err) throw err
-            res.json(response)
+    console.log(req.body);
+    var result;
+    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password+'"';
+        db.query(sql,function(err, row, fields){
+          if (err) {
+            return console.error("mysql syntax");
+          } else if (!row.length) {
+            return res.status(500).json(error, description = "login failed");
+          } 
         })
+    const userData = {
+      id: "",
+      username: "",
+      password:"",
+    };
+    const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
+    const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
+    tokenList[refreshToken] = { accessToken, refreshToken };
+    debug(`Gửi Token và Refresh Token về cho client...`);
     return res.status(200).json({accessToken, refreshToken});
 
 
@@ -61,14 +74,14 @@ let login = async function (req, res) {// ()
  * @param {*} res 
  */
 let refreshToken = async (req, res) => {
-  // User gửi mã refresh token kèm theo trong body
+// User gửi mã refresh token kèm theo trong body
   const refreshTokenFromClient = req.body.refreshToken;// get old token
   // debug("tokenList: ", tokenList);
-  
+
   // Nếu như tồn tại refreshToken truyền lên và nó cũng nằm trong tokenList của chúng ta
   if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare
     try {
-      // Verify kiểm tra tính hợp lệ của cái refreshToken và lấy dữ liệu giải mã decoded 
+      // Verify kiểm tra tính hợp lệ của cái refreshToken và lấy dữ liệu giải mã decoded
       const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret);
 
       // Thông tin user lúc này các bạn có thể lấy thông qua biến decoded.data
@@ -81,7 +94,7 @@ let refreshToken = async (req, res) => {
 
       // gửi token mới về cho người dùng
       return res.status(200).json({accessToken});// if new/old token same res new token
-    } catch (error) {
+     } catch (error) {
       debug(error);
 
       res.status(403).json({
