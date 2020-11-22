@@ -18,9 +18,13 @@ let initAPIs = (app) => {
   // (active, which file . which movement)
   router.post("/login", AuthController.login);
   router.post("/refresh-token", AuthController.refreshToken);
-  // when user click song button to play what will i get?
-  // router.post("/song_button_id", AuthController.song_button_id);
-  router.use(AuthMiddleWare.isAuth);// ?
+
+  router.use(AuthMiddleWare.isAuth);
+  router.get("/vehicle",vehiclesCtrl.get);
+  router.get("/command",commandCtrl.get);
+  router.get("/account",accountsCtrl.get);
+
+
   return app.use("/", router);
 }
 
