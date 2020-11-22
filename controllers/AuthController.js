@@ -31,7 +31,7 @@ let login = async function (req, res) {// ()
   try {
     debug(`req sucess with: ${req.body.account} and Password: ${req.body.password}\n`);
     console.log(req.body.account+" "+req.body.password);
-    let sql = 'SELECT * FROM user WHERE account = ${req.body.account} AND password = ${req.body.password}'
+    let sql = 'SELECT * FROM user WHERE username = ${req.body.account} AND password = ${req.body.password}'
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
