@@ -28,7 +28,7 @@ let login = async function (req, res) {
     // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
     let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password + '" LIMIT 1';
     // query result is list format like [ , , , , ]
-    var result = await dbQuery(sql);
+    var result = await dbQuery(sql);// connect to which db ?
 
     console.log(result);
     // if query has no result = 'Invalid login.'

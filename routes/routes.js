@@ -3,8 +3,8 @@ module.exports = function(app) {
 };
 const express = require("express");
 const router = express.Router();
-const AuthMiddleWare = require("../middleware/AuthMiddleware");
-const AuthController = require("../controllers/AuthController");
+const AuthMiddleWare = require("../middleware/AuthMiddleware");// direct to AuthMiddleware.js
+const AuthController = require("../controllers/AuthController");// direct to AuthController.js
 
 
 
@@ -16,16 +16,13 @@ let initAPIs = (app) => {
   // when user click login button
   // router.post(get data) get the response(ex:140.136.1501.130.3000/login) from app
   // (active, which file . which movement)
-  router.post("/login", AuthController.login);
+  router.post("/login", AuthController.login);// go to AuthController.js execute login function
   router.post("/refresh-token", AuthController.refreshToken);
-
   router.use(AuthMiddleWare.isAuth);
-
-
   return app.use("/", router);
 }
 
-module.exports = initAPIs;
+module.exports = initAPIs;// 
 
 /*
 Question:
