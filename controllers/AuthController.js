@@ -21,7 +21,7 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  */
 // according Postman POST [localhost:3000/login] Send Body [account: "user1", password: "123456"]
 // assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
-// res = ?
+// res = res.status(403).json({message: 'Invalid login.'});
 // where res go to ?
 let login = async function (req, res) {
   try {
@@ -34,7 +34,7 @@ let login = async function (req, res) {
     // if query has no result = 'Invalid login.'
     if(result.length==0){
       return res.status(403).json({
-        message: 'Invalid login.',
+        message: 'Invalid login.'
       });
     }
     // what this ? all is result[0] didn't make sense to me

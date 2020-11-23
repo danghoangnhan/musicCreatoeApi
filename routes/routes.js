@@ -22,7 +22,7 @@ let initAPIs = (app) => {
   return app.use("/", router);
 }
 
-module.exports = initAPIs;// 
+module.exports = initAPIs;// module.exports make initAPIs become a library for other .js file use
 
 /*
 Question:
