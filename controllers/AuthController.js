@@ -22,7 +22,7 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
 // according Postman POST [localhost:3000/login] Send Body [account: "user1", password: "123456"]
 // assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
 // res = res.status(403).json({message: 'Invalid login.'});
-// where res go to ?
+// res is req return
 let login = async function (req, res) {
   try {
     // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
@@ -46,11 +46,12 @@ let login = async function (req, res) {
 
 
     console.log(userData);
-    // accessToken = ?
+    // accessToken = "string"
     const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
-    // refreshToken = ?
+    // refreshToken = "string"
     const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
     tokenList[refreshToken] = { accessToken, refreshToken };
+    //console.log("toooooooooookenList = "+tokenList); toooooooooookenList = [object Object]
     debug(`Gửi Token và Refresh Token về cho client...`);
     return res.status(200).json({accessToken, refreshToken});
   } catch (error) {
