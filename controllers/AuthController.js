@@ -45,13 +45,13 @@ let login = async function (req, res) {
     };
 
 
-    console.log(userData);
+    //console.log(userData);
     // accessToken = "string"
     const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
     // refreshToken = "string"
     const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
-    tokenList[refreshToken] = { accessToken, refreshToken };
-    //console.log("toooooooooookenList = "+tokenList); toooooooooookenList = [object Object]
+    tokenList = { accessToken, refreshToken };
+    console.log("toooooooooookenList = "+tokenList);// toooooooooookenList = [object Object]
     debug(`Gửi Token và Refresh Token về cho client...`);
     return res.status(200).json({accessToken, refreshToken});
   } catch (error) {
@@ -106,10 +106,8 @@ function dbQuery(databaseQuery) {
         data({});
         throw error;
       }
-
     });
   });
-
 }
 
 module.exports = {
