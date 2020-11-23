@@ -13,26 +13,31 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secre
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-example-trungquandev.com-green-cat-a@";
 
+// what this ?
 /**
  * controller login
  * @param {*} req 
  * @param {*} res 
  */
+// according Postman POST [localhost:3000/login] Send Body [account: "user1", password: "123456"]
+// assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
+// res = ?
+// where res go to ?
 let login = async function (req, res) {
   try {
-
-    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password+'" LIMIT 1';
-
+    // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
+    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password + '" LIMIT 1';
+    // query result is list format like [ , , , , ]
     var result = await dbQuery(sql);
 
     console.log(result);
-    
+    // if query has no result = 'Invalid login.'
     if(result.length==0){
       return res.status(403).json({
         message: 'Invalid login.',
       });
     }
-
+    // what this ? all is result[0] didn't make sense to me
     const userData = {
       _id: result[0].id,
       name: result[0].username,
@@ -41,7 +46,9 @@ let login = async function (req, res) {
 
 
     console.log(userData);
+    // accessToken = ?
     const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
+    // refreshToken = ?
     const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
     tokenList[refreshToken] = { accessToken, refreshToken };
     debug(`Gửi Token và Refresh Token về cho client...`);
@@ -57,6 +64,7 @@ let login = async function (req, res) {
  * @param {*} req 
  * @param {*} res 
  */
+// why there can exist two refreshToken
 let refreshToken = async (req, res) => {
   const refreshTokenFromClient = req.body.refreshToken;// get old token
   if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare
