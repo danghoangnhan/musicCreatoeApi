@@ -13,26 +13,31 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secre
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-example-trungquandev.com-green-cat-a@";
 
+// what this ?
 /**
  * controller login
  * @param {*} req 
  * @param {*} res 
  */
+// according Postman POST [localhost:3000/login] Send Body [account: "user1", password: "123456"]
+// assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
+// res = res.status(403).json({message: 'Invalid login.'});
+// res is req return
 let login = async function (req, res) {
   try {
-
-    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password+'" LIMIT 1';
-
-    var result = await dbQuery(sql);
+    // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
+    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password + '" LIMIT 1';
+    // query result is list format like [ , , , , ]
+    var result = await dbQuery(sql);// connect to which db ?
 
     console.log(result);
-    
+    // if query has no result = 'Invalid login.'
     if(result.length==0){
       return res.status(403).json({
-        message: 'Invalid login.',
+        message: 'Invalid login.'
       });
     }
-
+    // what this ? all is result[0] didn't make sense to me
     const userData = {
       _id: result[0].id,
       name: result[0].username,
@@ -40,10 +45,13 @@ let login = async function (req, res) {
     };
 
 
-    console.log(userData);
+    //console.log(userData);
+    // accessToken = "string"
     const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
+    // refreshToken = "string"
     const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
-    tokenList[refreshToken] = { accessToken, refreshToken };
+    tokenList = { accessToken, refreshToken };
+    console.log("toooooooooookenList = "+tokenList);// toooooooooookenList = [object Object]
     debug(`Gửi Token và Refresh Token về cho client...`);
     return res.status(200).json({accessToken, refreshToken});
   } catch (error) {
@@ -57,6 +65,7 @@ let login = async function (req, res) {
  * @param {*} req 
  * @param {*} res 
  */
+// why there can exist two refreshToken
 let refreshToken = async (req, res) => {
   const refreshTokenFromClient = req.body.refreshToken;// get old token
   if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare
@@ -97,10 +106,8 @@ function dbQuery(databaseQuery) {
         data({});
         throw error;
       }
-
     });
   });
-
 }
 
 module.exports = {
