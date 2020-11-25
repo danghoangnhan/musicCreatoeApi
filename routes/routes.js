@@ -17,6 +17,7 @@ let initAPIs = (app) => {
   // router.post(get data) get the response(ex:140.136.151.130.3000/login) from app
   // (active, which file . which movement)
   router.post("/login", AuthController.login);// go to AuthController.js execute login function
+  router.post("/history", HistoryController.history);
   router.post("/refresh-token", AuthController.refreshToken);
   router.use(AuthMiddleWare.isAuth);// 
   return app.use("/", router);

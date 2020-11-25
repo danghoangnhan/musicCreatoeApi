@@ -37,7 +37,7 @@ let login = async function (req, res) {
         message: 'Invalid login.'
       });
     }
-    // what this ? all is result[0] didn't make sense to me
+    // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
     const userData = {
       _id: result[0].id,
       name: result[0].username,
@@ -65,7 +65,7 @@ let login = async function (req, res) {
  * @param {*} req 
  * @param {*} res 
  */
-// why there can exist two refreshToken
+
 let refreshToken = async (req, res) => {
   const refreshTokenFromClient = req.body.refreshToken;// get old token
   if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare

@@ -1,18 +1,14 @@
+
 const jwtHelper = require("../helpers/jwt.helper");
 const debug = console.log.bind(console);
 const util = require('util')
 const mysql = require('mysql')
 const db = require('./../api/db')
 
-// Biến cục bộ trên server này sẽ lưu trữ tạm danh sách token
-// Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
 let tokenList = {};
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h";
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-example-trungquandev.com-green-cat-a@";
-const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-example-trungquandev.com-green-cat-a@";
 
-// what this ?
 /**
  * controller login
  * @param {*} req 
@@ -36,7 +32,7 @@ let login = async function (req, res) {
         message: 'Invalid login.'
       });
     }
-    // what this ? all is result[0] didn't make sense to me
+    // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
     const userData = {
       _id: result[0].id,
       name: result[0].username,
@@ -47,12 +43,10 @@ let login = async function (req, res) {
     //console.log(userData);
     // accessToken = "string"
     const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
-    // refreshToken = "string"
-    const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
-    tokenList = { accessToken, refreshToken };
-    console.log("toooooooooookenList = "+tokenList);// toooooooooookenList = [object Object]
+    tokenList = { accessToken};
+    //console.log("tokenList = "+tokenList);
     debug(`Gửi Token và Refresh Token về cho client...`);
-    return res.status(200).json({accessToken, refreshToken});
+    return res.status(200).json({accessToken});
   } catch (error) {
     debug(error);
     return res.status(501).json(error);
@@ -60,16 +54,16 @@ let login = async function (req, res) {
 }
 
 /**
- * controller refreshToken
+ * controller accessToken
  * @param {*} req 
  * @param {*} res 
  */
-// why there can exist two refreshToken
-let refreshToken = async (req, res) => {
-  const refreshTokenFromClient = req.body.refreshToken;// get old token
-  if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare
+
+let accessToken = async (req, res) => {
+  const accessTokenFromClient = req.body.accessToken;// get old token
+  if (accessTokenFromClient && (tokenList[accessTokenFromClient])) {// new and old token compare
     try {
-      const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret);
+      const decoded = await jwtHelper.verifyToken(accessTokenFromClient, accessTokenSecret);
       const userFakeData = decoded.data;
 
       debug(`Thực hiện tạo mã Token trong bước gọi refresh Token, [thời gian sống vẫn là 1 giờ.]`);
@@ -111,5 +105,5 @@ function dbQuery(databaseQuery) {
 
 module.exports = {
   login: login,
-  refreshToken: refreshToken,
+  accessToken: accessToken,
 }
