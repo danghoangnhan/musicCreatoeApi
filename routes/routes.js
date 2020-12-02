@@ -5,7 +5,9 @@ const express = require("express");
 const router = express.Router();
 const AuthMiddleWare = require("../middleware/AuthMiddleware");// direct to AuthMiddleware.js
 const AuthController = require("../controllers/AuthController");// direct to AuthController.js
-const HistoryController = require("../controllers/HistoryController");// direct to AuthController.js
+const HistoryController = require("../controllers/HistoryController");// direct to HistoryController.js
+const LastAddController = require("../controllers/LastAddController");// direct to LastAddController.js
+const MostPlayController = require("../controllers/MostPlayController");// direct to MostPlayController.js
 
 
 
@@ -19,6 +21,8 @@ let initAPIs = (app) => {
   // (active, which file . which movement)
   router.post("/login", AuthController.login);// go to AuthController.js execute login function
   router.post("/history", HistoryController.history);
+  router.post("/lastadd", LastAddController.lastadd);
+  router.post("/mostplay", MostPlayController.mostplay);
   router.post("/refresh-token", AuthController.refreshToken);
   router.use(AuthMiddleWare.isAuth);// 
   return app.use("/", router);

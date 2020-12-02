@@ -16,8 +16,6 @@ const db = require('./../api/db')
 let history = async function (req, res){
     try {
         let sql = 'SELECT * FROM Song ORDER BY playtime DESC';
-        // LastAdd = 'SELECT * FROM Song ORDER BY createtime DESC'
-        // MostPlay = 'SELECT * FROM Song ORDER BY playcount DESC'
         // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
         var result = await dbQuery(sql);// connect to db
         console.log(result);
