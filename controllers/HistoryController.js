@@ -13,7 +13,7 @@ const db = require('./../api/db')
 // assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
 // res = res.status(403).json({message: 'Invalid login.'});
 // res is req return
-let history = async function (req, res) {
+let history = async function (req, res){
     try {
         let sql = 'SELECT * FROM Song ORDER BY playtime DESC';
         // LastAdd = 'SELECT * FROM Song ORDER BY createtime DESC'
@@ -27,6 +27,9 @@ let history = async function (req, res) {
             message: 'NO Record Found'
             });
         }
+    }
+    catch(error){
+        throw error;
     }
 }
 

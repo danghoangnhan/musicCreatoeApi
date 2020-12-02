@@ -5,6 +5,7 @@ const express = require("express");
 const router = express.Router();
 const AuthMiddleWare = require("../middleware/AuthMiddleware");// direct to AuthMiddleware.js
 const AuthController = require("../controllers/AuthController");// direct to AuthController.js
+const HistoryController = require("../controllers/HistoryController");// direct to AuthController.js
 
 
 
