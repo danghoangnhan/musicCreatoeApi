@@ -25,8 +25,9 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
 // res is req return
 let login = async function (req, res) {
   try {
+    debug(req.query);
     // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
-    let sql = 'SELECT * FROM user WHERE username = "' + req.body.account + '" AND password = "' + req.body.password + '" LIMIT 1';
+    let sql = 'SELECT * FROM user WHERE username = "' + req.query.username + '" AND password = "' + req.query.password + '" LIMIT 1';
     // query result is list format like [ , , , , ]
     var result = await dbQuery(sql);// connect to which db ?
 
