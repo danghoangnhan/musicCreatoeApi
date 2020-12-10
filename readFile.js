@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const db = require('./api/db')
 const path = require('path');
 var fs = require('fs');
@@ -16,3 +17,12 @@ for(var i=0;i<files.length;i++){
     });
 };
 
+=======
+var fs = require('fs');
+var file = require('file-system');
+var files = fs.readdirSync('E:/readFile');
+files.forEach(element => {
+	var sql = "INSERT INTO tune (id, TuneName, file) VALUES ('Cardinal', 'Stavanger', 'Norway')";
+    
+});
+>>>>>>> 63eb0cc62be1db0c936f7c2317f64ac7126f59bb
