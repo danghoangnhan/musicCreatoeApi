@@ -5,7 +5,7 @@ const mysql = require('mysql')
 const db = require('./../api/db')
 
 /**
- * controller event1
+ * controller play
  * @param {*} req 
  * @param {*} res 
  */
@@ -13,19 +13,9 @@ const db = require('./../api/db')
 // assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
 // res = res.status(403).json({message: 'Invalid login.'});
 // res is req return
-let event1 = async function (req, res){
+let play = async function (req, res) {
     try {
-        let sql = '';
-        // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
-        var result = await dbQuery(sql);// connect to db
-        console.log(result);
-        // if query has no result = 'Invalid login.'
-        if(result.length==0){
-            return res.status(403).json({
-            message: 'NO Record Found'
-            });
-        }
-        else{return res.status(200).send(result);}
+        let sql = 'SELECT count(username) FROM user WHERE username = "' + req.body.account + '"'; 
     }
     catch(error){
         throw error;
@@ -52,5 +42,5 @@ function dbQuery(databaseQuery) {
 }
 
 module.exports = {
-    event1: event1
+    play: play
 }

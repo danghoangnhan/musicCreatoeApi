@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');// analysis req.body
 require('dotenv').config({path:'api/.env'});
 const initAPIs = require("./routes/routes");
 require('dotenv').config();
-const port = process.env.PORT;
+const port = process.env.PORT; // in .env file PROT
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

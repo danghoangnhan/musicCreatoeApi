@@ -20,43 +20,46 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  * @param {*} res 
  */
 let register = async function (req, res) {
-  var tempt;
   try {
-    let sql = 'SELECT username FROM User WHERE username = "' + req.body.account + '"';
-    db.query(sql, function(err, result){
-      if (err) 
-        throw err;
-      else
-      tempt=result.something;
-    })
-    if(tempt){
+    let sql = 'SELECT count(username) FROM user WHERE username = "' + req.body.account + '"'; 
+    //console.log(tempt);
+    // (await dbQuery(sql)) = [ RowDataPacket { 'count(username)': 28 } ]
+    // [0] = RowDataPacket { 'count(username)': 28 }
+    // ['count(username)'] = 28 }
+    if((await dbQuery(sql))[0]['count(username)']>0){
       return res.status(403).json({
         message: 'This username already exist',
       });
     }
-      /*let sql = 'INSERT INTO Song (songname, tuneset, playcount, createtime) \
-        VALUES (' + req.body.songname + ', ' + req.body.tuneset + 
-        ', ' + 0 + ', ' + req.body.songname + ', ' + getDateTime() + ')';*/
-      // User(id, username, password, accesstoken, list)
-      let sql2 = 'INSERT INTO User(username, password,access_token) \
-      VALUES ("' + req.body.account + '", "' + req.body.password + '")';
-      db.query(sql2,function(err,results, fields){
-        if (err) 
-          throw err;
-          
-      })
-      /* wrong way
-      return res.status(200).json({
-        message: 'Register successful',
+    /*let sql = 'INSERT INTO Song (songname, tuneset, playcount, createtime) \
+      VALUES (' + req.body.songname + ', ' + req.body.tuneset + 
+      ', ' + 0 + ', ' + req.body.songname + ', ' + getDateTime() + ')';*/
+    // User(id, username, password, accesstoken, list)
+    
+    //https://www.w3schools.com/nodejs/shownodejs_cmd.asp?filename=demo_db_select
+    /*con.connect(function(err) {
+        if (err) throw err;
+        //Select all customers and return the result object:
+        con.query("SELECT * FROM customers", function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+        });
       });
-      */
-     console.log('Register successful', results.affectedRows);
+    */
+
+    let sql2 = 'INSERT INTO user (username, password, access_token, list_id) \
+    VALUES ("' + req.body.account + '", "' + req.body.password + '",NULL,NULL);';
+    db.query(sql2, function (err, result, fields){
+      if(err) throw err;
+    })
+    return res.status(200).json({
+      message: 'Insert successful',
+    });
   }
   catch(error){
     throw error;
   }
 }
-
 
 /**
  * controller login
@@ -139,14 +142,12 @@ function dbQuery(databaseQuery) {
   return new Promise(data => {
     db.query(databaseQuery, function (error, result) { // change db->connection for your code
       if (error) {
-        console.log(error);
+        //console.log(error);
         throw error;
       }
       try {
-        console.log(result);
-
+        //console.log(result);
         data(result);
-
       } catch (error) {
         data({});
         throw error;

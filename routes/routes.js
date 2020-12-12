@@ -33,7 +33,7 @@ let initAPIs = (app) => {
   router.use(AuthMiddleWare.isAuth);// 
 
   // All Event
-  router.post("/event1", EventController.event1);
+  router.post("/play", EventController.play);
   return app.use("/", router);
 }
 
