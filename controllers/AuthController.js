@@ -15,6 +15,50 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
 
 // what this ?
 /**
+ * controller register
+ * @param {*} req 
+ * @param {*} res 
+ */
+let register = async function (req, res) {
+  var tempt;
+  try {
+    let sql = 'SELECT username FROM User WHERE username = "' + req.body.account + '"';
+    db.query(sql, function(err, result){
+      if (err) 
+        throw err;
+      else
+      tempt=result.something;
+    })
+    if(tempt){
+      return res.status(403).json({
+        message: 'This username already exist',
+      });
+    }
+      /*let sql = 'INSERT INTO Song (songname, tuneset, playcount, createtime) \
+        VALUES (' + req.body.songname + ', ' + req.body.tuneset + 
+        ', ' + 0 + ', ' + req.body.songname + ', ' + getDateTime() + ')';*/
+      // User(id, username, password, accesstoken, list)
+      let sql2 = 'INSERT INTO User(username, password,access_token) \
+      VALUES ("' + req.body.account + '", "' + req.body.password + '")';
+      db.query(sql2,function(err,results, fields){
+        if (err) 
+          throw err;
+          
+      })
+      /* wrong way
+      return res.status(200).json({
+        message: 'Register successful',
+      });
+      */
+     console.log('Register successful', results.affectedRows);
+  }
+  catch(error){
+    throw error;
+  }
+}
+
+
+/**
  * controller login
  * @param {*} req 
  * @param {*} res 
@@ -59,7 +103,7 @@ let login = async function (req, res) {
     debug(error);
     return res.status(501).json(error);
   }
-}
+};
 
 /**
  * controller refreshToken
@@ -112,6 +156,7 @@ function dbQuery(databaseQuery) {
 }
 
 module.exports = {
+  register: register,
   login: login,
-  refreshToken: refreshToken,
+  refreshToken: refreshToken
 }

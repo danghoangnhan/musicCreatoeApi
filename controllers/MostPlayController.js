@@ -25,6 +25,7 @@ let mostplay = async function (req, res){
             message: 'NO Record Found'
             });
         }
+        else{return res.status(200).send(result);}
     }
     catch(error){
         throw error;
