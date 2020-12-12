@@ -15,10 +15,16 @@ const db = require('./../api/db')
 // res is req return
 let play = async function (req, res) {
     try {
-        let sql = 'SELECT count(username) FROM user WHERE username = "' + req.body.account + '"'; 
+        let sql = 'SELECT path FROM song WHERE id = "' + req.body.id + '"';
+        const tempt =await dbQuery(sql);
+        return res.status(200).json({
+            song:tempt
+        });
     }
     catch(error){
-        throw error;
+        return res.status(403).json({
+            message: error
+        });
     }
 }
 
@@ -34,7 +40,7 @@ function dbQuery(databaseQuery) {
             data(result);
         }
         catch (error) {
-            data({});
+            data(error);
             throw error;
             }
         });

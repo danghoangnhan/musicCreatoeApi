@@ -10,8 +10,7 @@ const AuthController = require("../controllers/AuthController");// direct to Aut
 const HistoryController = require("../controllers/HistoryController");// direct to HistoryController.js
 const LastAddController = require("../controllers/LastAddController");// direct to LastAddController.js
 const MostPlayController = require("../controllers/MostPlayController");// direct to MostPlayController.js
-
-
+const SongController = require("../controllers/SongController");// direct to SongController.js
 
 /**
  * Init all APIs on your application
@@ -29,11 +28,13 @@ let initAPIs = (app) => {
   router.post("/history", HistoryController.history);
   router.post("/lastadd", LastAddController.lastadd);
   router.post("/mostplay", MostPlayController.mostplay);
+  router.post("/play", EventController.play);
   //router.post("/refresh-token", AuthController.refreshToken);
-  router.use(AuthMiddleWare.isAuth);// 
 
   // All Event
-  router.post("/play", EventController.play);
+  router.get("/getsong", SongController.getsong);// get didn't have request body
+
+  router.use(AuthMiddleWare.isAuth);// 
   return app.use("/", router);
 }
 

@@ -1,4 +1,3 @@
-
 const jwtHelper = require("../helpers/jwt.helper");
 const debug = console.log.bind(console);
 const util = require('util')
@@ -31,9 +30,6 @@ let register = async function (req, res) {
         message: 'This username already exist',
       });
     }
-    /*let sql = 'INSERT INTO Song (songname, tuneset, playcount, createtime) \
-      VALUES (' + req.body.songname + ', ' + req.body.tuneset + 
-      ', ' + 0 + ', ' + req.body.songname + ', ' + getDateTime() + ')';*/
     // User(id, username, password, accesstoken, list)
     
     //https://www.w3schools.com/nodejs/shownodejs_cmd.asp?filename=demo_db_select
@@ -142,16 +138,11 @@ function dbQuery(databaseQuery) {
   return new Promise(data => {
     db.query(databaseQuery, function (error, result) { // change db->connection for your code
       if (error) {
-        //console.log(error);
+        console.log(error);
         throw error;
       }
-      try {
-        //console.log(result);
+        console.log(result);
         data(result);
-      } catch (error) {
-        data({});
-        throw error;
-      }
     });
   });
 }
