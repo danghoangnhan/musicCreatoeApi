@@ -29,6 +29,7 @@ let initAPIs = (app) => {
   router.post("/lastadd", LastAddController.lastadd);
   router.post("/mostplay", MostPlayController.mostplay);
   router.post("/play", EventController.play);
+  router.get("/randomPlaylist", SongController.getRanDomPlaylist);
   //router.post("/refresh-token", AuthController.refreshToken);
 
   // All Event

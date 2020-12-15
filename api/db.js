@@ -10,4 +10,22 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME || "dbproject"
 });
 
-module.exports = db
+function dbQuery(databaseQuery) {
+  return new Promise(data => {
+    db.query(databaseQuery, function (error, result) { // change db->connection for your code
+      if (error) {
+        throw error;
+      }
+      try {
+        data(result);
+      } catch (error){
+        data({});
+        throw error;
+      }
+    });
+  });
+}
+
+module.exports = {
+  dbQuery:dbQuery
+}

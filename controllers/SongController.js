@@ -4,14 +4,6 @@ const util = require('util')
 const mysql = require('mysql')
 const db = require('./../api/db')
 
-// Biến cục bộ trên server này sẽ lưu trữ tạm danh sách token
-// Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB
-let tokenList = {};
-const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h";
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-example-trungquandev.com-green-cat-a@";
-const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-example-trungquandev.com-green-cat-a@";
-
 // what this ?
 /**
  * controller getsong
@@ -21,18 +13,6 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
 let getsong = async function (req, res) {
   try {
     let sql = 'SELECT id, songName, tune_set FROM song';
-    /*
-    db.query(sql, function (err, result, fields){
-        if(err) throw err;
-      })
-    console.log(result);
-    return result;
-    */
-    /*
-    console.log('1');
-    console.log(await dbQuery(sql)); // didn't callback yet next line is execute
-    console.log('2');
-    */
     return res.status(200).json({
         message: await dbQuery(sql),
     });
@@ -42,24 +22,22 @@ let getsong = async function (req, res) {
   }
 }
 
-function dbQuery(databaseQuery) {
-    return new Promise(data => {
-      db.query(databaseQuery, function (error, result) { // change db->connection for your code
-        if (error) {
-          //console.log(error);
-          throw error;
-        }
-        try {
-          //console.log(result);
-          data(result);
-        } catch (error) {
-          data({});
-          throw error;
-        }
-      });
+let getRanDomPlaylist = async function (req, res) {
+  try {
+    let sql = 'SELECT distinct * from playlist order by rand('+id+') LIMIT 3';
+    const result = await db.dbQuery(sql);
+    return res.status(200).json({
+     value:result
     });
   }
-  
+  catch (error) {
+     return res.status(403).json({
+       message: error.message
+    });
+  }
+}
+
   module.exports = {
     getsong: getsong,
+    getRanDomPlaylist: getRanDomPlaylist
   }

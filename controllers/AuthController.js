@@ -25,7 +25,8 @@ let register = async function (req, res) {
     // (await dbQuery(sql)) = [ RowDataPacket { 'count(username)': 28 } ]
     // [0] = RowDataPacket { 'count(username)': 28 }
     // ['count(username)'] = 28 }
-    if((await dbQuery(sql))[0]['count(username)']>0){
+    var result = await db.dbQuery(sql);
+    if (result[0]['count(username)']>0){
       return res.status(403).json({
         message: 'This username already exist',
       });
@@ -45,16 +46,13 @@ let register = async function (req, res) {
 
     let sql2 = 'INSERT INTO user (username, password, access_token, list_id) \
     VALUES ("' + req.body.account + '", "' + req.body.password + '",NULL,NULL);';
-    db.query(sql2, function (err, result, fields){
-      if(err) throw err;
-    })
+    var result = await db.dbQuery(sql);
     return res.status(200).json({
-      message: 'Insert successful',
+      message: 'insert successful',
     });
-  }
-  catch(error){
-    throw error;
-  }
+}catch(err){
+  throw err;
+}
 }
 
 /**
@@ -72,8 +70,7 @@ let login = async function (req, res) {
     // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
     let sql = 'SELECT * FROM user WHERE username = "' + req.query.username + '" AND password = "' + req.query.password + '" LIMIT 1';
     // query result is list format like [ , , , , ]
-    var result = await dbQuery(sql);// connect to which db ?
-
+    var result = await db.dbQuery(sql);// connect to which db ?
     console.log(result);
     // if query has no result = 'Invalid login.'
     if(result.length==0){
@@ -110,45 +107,45 @@ let login = async function (req, res) {
  * @param {*} res 
  */
 // why there can exist two refreshToken
-let refreshToken = async (req, res) => {
-  const refreshTokenFromClient = req.body.refreshToken;// get old token
-  if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare
-    try {
-      const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret);
-      const userFakeData = decoded.data;
+// let refreshToken = async (req, res) => {
+//   const refreshTokenFromClient = req.body.refreshToken;// get old token
+//   if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare
+//     try {
+//       const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret);
+//       const userFakeData = decoded.data;
 
-      debug(`Thực hiện tạo mã Token trong bước gọi refresh Token, [thời gian sống vẫn là 1 giờ.]`);
-      const accessToken = await jwtHelper.generateToken(userFakeData, accessTokenSecret, accessTokenLife);
-      return res.status(200).json({accessToken});
-    } catch (error) {
-      debug(error);
+//       debug(`Thực hiện tạo mã Token trong bước gọi refresh Token, [thời gian sống vẫn là 1 giờ.]`);
+//       const accessToken = await jwtHelper.generateToken(userFakeData, accessTokenSecret, accessTokenLife);
+//       return res.status(200).json({accessToken});
+//     } catch (error) {
+//       debug(error);
 
-      res.status(403).json({
-        message: 'Invalid refresh token.',
-      });
-    }
-  } else {
-    return res.status(403).send({
-      message: 'No token provided.',
-    });
-  }
-};
+//       res.status(403).json({
+//         message: 'Invalid refresh token.',
+//       });
+//     }
+//   } else {
+//     return res.status(403).send({
+//       message: 'No token provided.',
+//     });
+//   }
+// };
 
-function dbQuery(databaseQuery) {
-  return new Promise(data => {
-    db.query(databaseQuery, function (error, result) { // change db->connection for your code
-      if (error) {
-        console.log(error);
-        throw error;
-      }
-        console.log(result);
-        data(result);
-    });
-  });
-}
+// function dbQuery(databaseQuery) {
+//   return new Promise(data => {
+//     db.query(databaseQuery, function (error, result) { // change db->connection for your code
+//       if (error) {
+//         console.log(error);
+//         throw error;
+//       }
+//         console.log(result);
+//         data(result);
+//     });
+//   });
+// }
 
 module.exports = {
   register: register,
   login: login,
-  refreshToken: refreshToken
+  // refreshToken: refreshToken
 }
