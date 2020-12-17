@@ -22,13 +22,12 @@ let getsong = async function (req, res) {
   }
 }
 
-let getRanDomPlaylist = async function (req, res) {
+let getPlaylist = async function (req, res) {
+  debug(req);
   try {
-    let sql = 'SELECT distinct * from playlist order by rand('+id+') LIMIT 3';
+    let sql = 'SELECT distinct * from playlist where id='+req;
     const result = await db.dbQuery(sql);
-    return res.status(200).json({
-     value:result
-    });
+    return res.status(200).json(result);
   }
   catch (error) {
      return res.status(403).json({
@@ -39,5 +38,5 @@ let getRanDomPlaylist = async function (req, res) {
 
   module.exports = {
     getsong: getsong,
-    getRanDomPlaylist: getRanDomPlaylist
+    getPlaylist: getPlaylist
   }
