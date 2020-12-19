@@ -1,11 +1,20 @@
 # musicCreatoeApi
 db table{
+<<<<<<< Updated upstream
     user(userId, userName, passWord)
     playlist(listId, userId, playListName)
     song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
     tune(tuneId, tuneName, path)
     playlist.userId = user.userId
     song.listId = playlist.listId
+=======
+    User(id, username, password, accesstoken, list)
+    List(id, listname, song)
+    Tune(id, tunename, path)
+    Song(id, songname, path, tuneset, playcount, playtime, createtime)
+    list = List.id
+    song = Song.id
+>>>>>>> Stashed changes
 }
 
 Mysql
