@@ -24,18 +24,26 @@ let initAPIs = (app) => {
   // All Page
   router.post("/register", AuthController.register);
   router.post("/login", AuthController.login);// go to AuthController.js execute login function
-  router.post("/create", CreateController.create);
   router.post("/history", HistoryController.history);
-  router.post("/lastadd", LastAddController.lastadd);
-  router.post("/mostplay", MostPlayController.mostplay);
-  router.post("/play", EventController.play);
-  router.get("/randomPlaylist", SongController.getRanDomPlaylist);
+  router.post("/lastAdd", LastAddController.lastAdd);
+  router.post("/mostPlay", MostPlayController.mostPlay);
   //router.post("/refresh-token", AuthController.refreshToken);
 
   // All Event
-  router.get("/getsong", SongController.getsong);// get didn't have request body
-
-  router.use(AuthMiddleWare.isAuth);// 
+  // song path
+  router.post("/play", EventController.play);
+  // this user all playlist
+  router.post("/getPlaylist", EventController.getPlaylist);
+  // this user's playlist all song
+  router.post("/getPlaylistSong", EventController.getPlaylistSong);
+  router.post("/createSong", EventController.createSong);
+  router.post("/createPlaylist", EventController.createPlaylist);
+  router.post("/deleteSong", EventController.deleteSong);
+  router.post("/deletePlaylist", EventController.deletePlaylist);
+  // this user all song
+  router.post("/getSong", EventController.getSong);
+  router.get("/randomPlaylist", SongController.getRandomPlaylist);// get didn't have request body
+  router.use(AuthMiddleWare.isAuth);
   return app.use("/", router);
 }
 

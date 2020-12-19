@@ -12,7 +12,6 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secre
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-example-trungquandev.com-green-cat-a@";
 
-// what this ?
 /**
  * controller register
  * @param {*} req 
@@ -20,15 +19,15 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  */
 let register = async function (req, res) {
   try {
-    let sql = 'SELECT count(username) FROM user WHERE username = "' + req.body.account + '"'; 
+    let sql = 'SELECT count(userName) FROM user WHERE userName = "' + req.body.account + '";'; 
     //console.log(tempt);
     // (await dbQuery(sql)) = [ RowDataPacket { 'count(username)': 28 } ]
     // [0] = RowDataPacket { 'count(username)': 28 }
     // ['count(username)'] = 28 }
     var result = await db.dbQuery(sql);
-    if (result[0]['count(username)']>0){
+    if (result[0]['count(userName)']>0){
       return res.status(403).json({
-        message: 'This username already exist',
+        message: 'This userName already exist',
       });
     }
     // User(id, username, password, accesstoken, list)
@@ -43,16 +42,17 @@ let register = async function (req, res) {
         });
       });
     */
-
-    let sql2 = 'INSERT INTO user (username, password, access_token, list_id) \
-    VALUES ("' + req.body.account + '", "' + req.body.password + '",NULL,NULL);';
+    // user(id, username, password, access_token, list_id)
+    let sql2 = 'INSERT INTO user (userName, passWord) \
+    VALUES ("' + req.body.account + '", "' + req.body.password + '";';
     var result = await db.dbQuery(sql);
     return res.status(200).json({
-      message: 'insert successful',
+      message: 'insert account successful',
     });
-}catch(err){
-  throw err;
-}
+  }
+  catch(err){
+    throw err;
+  }
 }
 
 /**
@@ -68,7 +68,7 @@ let login = async function (req, res) {
   try {
     debug(req.query);
     // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
-    let sql = 'SELECT * FROM user WHERE username = "' + req.query.username + '" AND password = "' + req.query.password + '" LIMIT 1';
+    let sql = 'SELECT * FROM user WHERE userName = "' + req.query.username + '" AND passWord = "' + req.query.password + '" LIMIT 1;';
     // query result is list format like [ , , , , ]
     var result = await db.dbQuery(sql);// connect to which db ?
     console.log(result);

@@ -4,27 +4,16 @@ const util = require('util')
 const mysql = require('mysql')
 const db = require('./../api/db')
 
-// what this ?
+
 /**
- * controller getsong
+ * controller getRandomPlaylist
  * @param {*} req 
  * @param {*} res 
  */
-let getsong = async function (req, res) {
-  try {
-    let sql = 'SELECT id, songName, tune_set FROM song';
-    return res.status(200).json({
-        message: await dbQuery(sql),
-    });
-  }
-  catch(error){
-    throw error;
-  }
-}
 
-let getRanDomPlaylist = async function (req, res) {
+let getRandomPlaylist = async function (req, res) {
   try {
-    let sql = 'SELECT distinct * from playlist order by rand('+id+') LIMIT 3';
+    let sql = 'SELECT distinct * from playlist order by rand('+id+') LIMIT 3;';
     const result = await db.dbQuery(sql);
     return res.status(200).json({
      value:result
@@ -38,6 +27,5 @@ let getRanDomPlaylist = async function (req, res) {
 }
 
   module.exports = {
-    getsong: getsong,
-    getRanDomPlaylist: getRanDomPlaylist
+    getRandomPlaylist: getRandomPlaylist
   }

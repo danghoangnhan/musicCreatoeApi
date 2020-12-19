@@ -13,11 +13,17 @@ const db = require('./../api/db')
 // assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
 // res = res.status(403).json({message: 'Invalid login.'});
 // res is req return
-let history = async function (req, res){
+
+// req userid, 
+let history = async function (req, res){// order by playtime desc
     try {
-        let sql = 'SELECT * FROM Song ORDER BY playtime DESC';
+        // playlist(listId, userId, playListName)
+        // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
+        let sql = 'SELECT * FROM song join playlist on song.listId = playlist.listId\
+                    WHERE userId = ' + req.body.userid + ' \
+                    ORDER BY playTime DESC;';
         // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
-        var result = await dbQuery(sql);// connect to db
+        var result = await db.dbQuery(sql);// connect to db
         console.log(result);
         // if query has no result = 'Invalid login.'
         if(result.length==0){

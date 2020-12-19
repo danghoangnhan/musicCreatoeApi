@@ -1,12 +1,19 @@
 # musicCreatoeApi
 db table{
-    User(id, username, password, accesstoken, list)
-    List(id, listname, song)
-    Tune(id, tunename, path)
-    Song(id, songname, tuneset, playcount, playtime, createtime)
-    list = List.id
-    song = Song.id
+    user(userId, userName, passWord)
+    playlist(listId, userId, playListName)
+    song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
+    tune(tuneId, tuneName, path)
+    playlist.userId = user.userId
+    song.listId = playlist.listId
 }
+
+Mysql
+rename attribute: ALTER TABLE user CHANGE password passWord varchar(50);
+delete attribute: ALTER TABLE user DROP access_token;
+add attribute: ALTER TABLE Customers
+               ADD Email varchar(255);
+delete: DELETE FROM customers WHERE Name='alex';
 
 CREATE TABLE customers (
     C_Id INT AUTO_INCREMENT,
@@ -21,6 +28,8 @@ T02FT
 VgaK?3464
 
 ip: 140.136.151.130:80
+
+(figma) design UI tool
 
 postman
 request body
