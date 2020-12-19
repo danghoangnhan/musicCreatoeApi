@@ -25,8 +25,10 @@ let initAPIs = (app) => {
   router.post("/register", AuthController.register);
   router.post("/login", AuthController.login);// go to AuthController.js execute login function
   router.post("/history", HistoryController.history);
-  router.post("/lastAdd", LastAddController.lastAdd);
-  router.post("/mostPlay", MostPlayController.mostPlay);
+  router.post("/lastadd", LastAddController.lastAdd);
+  router.post("/mostplay", MostPlayController.mostPlay);
+  router.post("/play", EventController.play);
+  router.get("/getPlaylist", EventController.getPlaylist);// get didn't have request body
   //router.post("/refresh-token", AuthController.refreshToken);
 
   // All Event

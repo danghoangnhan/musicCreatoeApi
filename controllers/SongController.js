@@ -15,9 +15,7 @@ let getRandomPlaylist = async function (req, res) {
   try {
     let sql = 'SELECT distinct * from playlist order by rand('+id+') LIMIT 3;';
     const result = await db.dbQuery(sql);
-    return res.status(200).json({
-     value:result
-    });
+    return res.status(200).json(result);
   }
   catch (error) {
      return res.status(403).json({
