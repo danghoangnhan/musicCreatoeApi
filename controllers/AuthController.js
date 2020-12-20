@@ -42,10 +42,11 @@ let register = async function (req, res) {
         });
       });
     */
-    // user(id, username, password, access_token, list_id)
-    let sql2 = 'INSERT INTO user (userName, passWord) \
-    VALUES ("' + req.body.account + '", "' + req.body.password + '";';
-    var result = await db.dbQuery(sql);
+    // user(id, username, password)
+    debug(req.body)
+    let sql2 = 'INSERT INTO user (userName, passWord) VALUES ("' + req.body.account + '", "' + req.body.password + '");';
+    debug(sql2)
+    var result = await db.dbQuery(sql2);
     return res.status(200).json({
       message: 'insert account successful',
     });
@@ -66,7 +67,7 @@ let register = async function (req, res) {
 // res is req return
 let login = async function (req, res) {
   try {
-    debug(req.query);
+    debug(req.query);//retroflict
     // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
     let sql = 'SELECT * FROM user WHERE userName = "' + req.query.username + '" AND passWord = "' + req.query.password + '" LIMIT 1;';
     // query result is list format like [ , , , , ]

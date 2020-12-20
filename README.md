@@ -1,20 +1,11 @@
 # musicCreatoeApi
 db table{
-<<<<<<< Updated upstream
     user(userId, userName, passWord)
     playlist(listId, userId, playListName)
     song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
     tune(tuneId, tuneName, path)
     playlist.userId = user.userId
     song.listId = playlist.listId
-=======
-    User(id, username, password, accesstoken, list)
-    List(id, listname, song)
-    Tune(id, tunename, path)
-    Song(id, songname, path, tuneset, playcount, playtime, createtime)
-    list = List.id
-    song = Song.id
->>>>>>> Stashed changes
 }
 
 Mysql
@@ -40,13 +31,62 @@ ip: 140.136.151.130:80
 
 (figma) design UI tool
 
-postman
-request body
+POSTMAN <POST localhost:3000/login> <Body> <raw>
+register: if had register
 {
-    "account": "userrr3",
+    "account": "user1",
     "password": "123456"
 }
-
+register: if new register
+{
+    "account": "user11",
+    "password": "123456"
+}
+change id data type from int to int NOT NULL AUTO_INCREMENT{
+    alter table user MODIFY column userId int NOT NULL AUTO_INCREMENT;
+}
+login: <POST localhost:3000/login> <Params>{
+    key: value
+    v username: user1
+    v password: 123456
+}
+song(songId, listId, songName, tuneSet, duration(int), playCount(int), playTime, createTime, path)
+createSong
+{
+    "listid": 1,
+    "songname": "star",
+    "tuneset": "[1,2,3]",
+    "duration": 300,
+    "playcount": 0,
+    "path": "140.136.151.130:80/music/song/songName.mid"
+}
+playlist(listId, userId, playListName)
+createPlaylist
+{
+    "userid": 22,
+    "playlistname": "all star"
+}
+deleteSong
+{
+    "songid": 24
+}
+deletePlaylist
+{
+    "listid": 11
+}
+play
+{
+    "songid": 23
+}
+getPlaylist
+{
+    "userid": 4
+}
+getPlaylistSong
+{
+    "userid": 1,
+    "listid": 1
+}
 .env file{
     DB_HOST="140.136.151.130"
     DB_USER="root"
@@ -54,4 +94,8 @@ request body
     DB_NAME="dbProject"
     DB_PORT="3306"
     PORT=3000
+}
+
+extention{
+    forget password
 }

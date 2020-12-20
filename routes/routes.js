@@ -27,12 +27,12 @@ let initAPIs = (app) => {
   router.post("/history", HistoryController.history);
   router.post("/lastadd", LastAddController.lastAdd);
   router.post("/mostplay", MostPlayController.mostPlay);
-  router.post("/play", EventController.play);
-  router.get("/getPlaylist", EventController.getPlaylist);// get didn't have request body
   //router.post("/refresh-token", AuthController.refreshToken);
 
+  // GET didn't have req.body
+
   // All Event
-  // song path
+  // song(*), update playCount, playTime
   router.post("/play", EventController.play);
   // this user all playlist
   router.post("/getPlaylist", EventController.getPlaylist);
@@ -42,9 +42,6 @@ let initAPIs = (app) => {
   router.post("/createPlaylist", EventController.createPlaylist);
   router.post("/deleteSong", EventController.deleteSong);
   router.post("/deletePlaylist", EventController.deletePlaylist);
-  // this user all song
-  router.post("/getSong", EventController.getSong);
-  router.get("/randomPlaylist", SongController.getRandomPlaylist);// get didn't have request body
   router.use(AuthMiddleWare.isAuth);
   return app.use("/", router);
 }
