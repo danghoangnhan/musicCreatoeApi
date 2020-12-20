@@ -46,3 +46,12 @@ request body
     "account": "userrr3",
     "password": "123456"
 }
+
+.env file{
+    DB_HOST="140.136.151.130"
+    DB_USER="root"
+    DB_PASS="dpproject"
+    DB_NAME="dbProject"
+    DB_PORT="3306"
+    PORT=3000
+}
