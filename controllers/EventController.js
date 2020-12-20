@@ -117,7 +117,7 @@ let deletePlaylist = async function (req, res) {
                     WHERE listId = ' + req.body.listid + ';';
         const tempt = await db.dbQuery(sql);
         return res.status(200).json({
-            tempt
+            message: tempt
         });
     }
     catch(error){
@@ -140,7 +140,7 @@ let deletePlaylist = async function (req, res) {
 let play = async function (req, res) {
     try {
         debug(req.body);
-        let sql = 'SELECT * FROM song WHERE songId = "' + req.body.songid + '"';
+        let sql = 'SELECT * FROM song WHERE songId = ' + req.body.songid;
         debug(sql);
         const tempt = await db.dbQuery(sql);
         return res.status(200).json({
@@ -166,7 +166,7 @@ let getPlaylist = async function (req, res) {
         let sql = 'SELECT listId FROM playlist WHERE userId = "' + req.body.userid + '";';
         const tempt = await db.dbQuery(sql);
         return res.status(200).json({
-            list_id:tempt
+            message: tempt
         });
     }
     catch(error){
