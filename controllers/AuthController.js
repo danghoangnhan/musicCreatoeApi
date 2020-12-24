@@ -80,22 +80,9 @@ let login = async function (req, res) {
       });
     }
     // what this ? all is result[0] didn't make sense to me
-    const userData = {
-      _id: result[0].id,
-      name: result[0].username,
-      password: result[0].password
-    };
-
-
-    //console.log(userData);
-    // accessToken = "string"
-    // const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
-    // // refreshToken = "string"
-    // const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
-    // tokenList = { accessToken, refreshToken };
-    console.log("toooooooooookenList = "+tokenList);// toooooooooookenList = [object Object]
-    debug(`Gửi Token và Refresh Token về cho client...`);
-    return res.status(200).json(userData);
+ 
+    debug(result);
+    return res.status(200).json(result);
   } catch (error) {
     debug(error);
     return res.status(501).json(error);

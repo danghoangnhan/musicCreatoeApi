@@ -31,7 +31,7 @@ ip: 140.136.151.130:80
 
 (figma) design UI tool
 
-POSTMAN <POST localhost:3000/login> <Body> <raw>
+POSTMAN <POST localhost:3000/register> <Body> <raw>
 register: if had register
 {
     "account": "user1",
