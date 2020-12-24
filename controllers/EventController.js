@@ -180,12 +180,11 @@ let play = async function (req, res) {
 // POST req user(id) | res playlist(list_id)
 // playlist(listId, userId, playListName)
 let getPlaylist = async function (req, res) {
+    debug(req.query);
     try {
-        let sql = 'SELECT listId FROM playlist WHERE userId = "' + req.body.userid + '";';
+        let sql = 'SELECT * FROM playlist WHERE userId = "' + req.query.userid + '";';
         const tempt = await db.dbQuery(sql);
-        return res.status(200).json({
-            message: tempt
-        });
+        return res.status(200).json(tempt);
     }
     catch(error){
         return res.status(403).json({
