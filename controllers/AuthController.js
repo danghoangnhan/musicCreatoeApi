@@ -75,14 +75,8 @@ let login = async function (req, res) {
       });
     }
     // what this ? all is result[0] didn't make sense to me
-    const userData = {
-      _id: result[0].id,
-      name: result[0].username,
-      password: result[0].password
-    };
+ 
     debug(result);
-    console.log(userData);// toooooooooookenList = [object Object]
-    debug(`Gửi Token và Refresh Token về cho client...`);
     return res.status(200).json(result);
   } catch (error) {
     debug(error);
