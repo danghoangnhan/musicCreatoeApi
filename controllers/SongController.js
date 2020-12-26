@@ -23,9 +23,9 @@ let getsong = async function (req, res) {
 }
 
 let getPlaylist = async function (req, res) {
-  debug(req);
+  debug(req.query);
   try {
-    let sql = 'SELECT distinct * from playlist where id='+req;
+    let sql = 'SELECT distinct * from playlist where id='+req.query.id;
     const result = await db.dbQuery(sql);
     return res.status(200).json(result);
   }

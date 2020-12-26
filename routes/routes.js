@@ -35,7 +35,7 @@ let initAPIs = (app) => {
   // All Event
   router.get("/getsong", SongController.getsong);// get didn't have request body
 
-  router.use(AuthMiddleWare.isAuth);// 
+  // router.use(AuthMiddleWare.isAuth);// 
   return app.use("/", router);
 }
 
