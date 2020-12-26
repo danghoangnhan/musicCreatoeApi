@@ -64,9 +64,11 @@ let register = async function (req, res) {
 
 let login = async function (req, res) {
   try {    
+    debug(req.query);
     let sql = 'SELECT * FROM user WHERE userName = "' + req.query.username + '" AND passWord = "' + req.query.password + '" LIMIT 1;';
     // query result is list format like [ , , , , ]
     var result = await db.dbQuery(sql);// connect to which db ?
+    debug(sql);
     console.log(result);
 
     if(result.length==0){
@@ -77,7 +79,7 @@ let login = async function (req, res) {
     // what this ? all is result[0] didn't make sense to me
  
     debug(result);
-    return res.status(200).json(result);
+    return res.status(200).json(result[0]);
   } catch (error) {
     debug(error);
     return res.status(501).json(error);
