@@ -5,7 +5,7 @@ const mysql = require('mysql')
 const db = require('./../api/db')
 
 /**
- * controller lastadd
+ * controller lastAdd
  * @param {*} req 
  * @param {*} res 
  */
@@ -13,11 +13,17 @@ const db = require('./../api/db')
 // assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
 // res = res.status(403).json({message: 'Invalid login.'});
 // res is req return
-let lastadd = async function (req, res){
+
+// req userid
+let lastAdd = async function (req, res){
     try {
-        let sql = 'SELECT * FROM Song ORDER BY createtime DESC';
+        // playlist(listId, userId, playListName)
+        // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
+        let sql = 'SELECT * FROM song join playlist on song.listId = playlist.listId\
+                    WHERE userId = ' + req.body.userid + ' \
+                    ORDER BY createTime DESC;';
         // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
-        var result = await dbQuery(sql);// connect to db
+        var result = await db.dbQuery(sql);// connect to db
         console.log(result);
         // if query has no result = 'Invalid login.'
         if(result.length==0){
@@ -52,5 +58,5 @@ function dbQuery(databaseQuery) {
 }
 
 module.exports = {
-    lastadd: lastadd
+    lastAdd: lastAdd
 }

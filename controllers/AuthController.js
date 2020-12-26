@@ -12,7 +12,6 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secre
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "3650d";
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-example-trungquandev.com-green-cat-a@";
 
-// what this ?
 /**
  * controller register
  * @param {*} req 
@@ -20,15 +19,15 @@ const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-se
  */
 let register = async function (req, res) {
   try {
-    let sql = 'SELECT count(username) FROM user WHERE username = "' + req.body.account + '"'; 
+    let sql = 'SELECT count(userName) FROM user WHERE userName = "' + req.body.account + '";'; 
     //console.log(tempt);
     // (await dbQuery(sql)) = [ RowDataPacket { 'count(username)': 28 } ]
     // [0] = RowDataPacket { 'count(username)': 28 }
     // ['count(username)'] = 28 }
     var result = await db.dbQuery(sql);
-    if (result[0]['count(username)']>0){
+    if (result[0]['count(userName)']>0){
       return res.status(403).json({
-        message: 'This username already exist',
+        message: 'This userName already exist',
       });
     }
     // User(id, username, password, accesstoken, list)
@@ -43,16 +42,18 @@ let register = async function (req, res) {
         });
       });
     */
-
-    let sql2 = 'INSERT INTO user (username, password, access_token, list_id) \
-    VALUES ("' + req.body.account + '", "' + req.body.password + '",NULL,NULL);';
-    var result = await db.dbQuery(sql);
+    // user(id, username, password)
+    debug(req.body)
+    let sql2 = 'INSERT INTO user (userName, passWord) VALUES ("' + req.body.account + '", "' + req.body.password + '");';
+    debug(sql2)
+    var result = await db.dbQuery(sql2);
     return res.status(200).json({
-      message: 'insert successful',
+      message: 'insert account successful',
     });
-}catch(err){
-  throw err;
-}
+  }
+  catch(err){
+    throw err;
+  }
 }
 
 /**
@@ -60,41 +61,25 @@ let register = async function (req, res) {
  * @param {*} req 
  * @param {*} res 
  */
-// according Postman POST [localhost:3000/login] Send Body [account: "user1", password: "123456"]
-// assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
-// res = res.status(403).json({message: 'Invalid login.'});
-// res is req return
+
 let login = async function (req, res) {
-  try {
+  try {    
     debug(req.query);
-    // sql = 'SELECT * FROM user WHERE username = "user1" AND password = "123456" LIMIT 1';
-    let sql = 'SELECT * FROM user WHERE username = "' + req.query.username + '" AND password = "' + req.query.password + '" LIMIT 1';
+    let sql = 'SELECT * FROM user WHERE userName = "' + req.query.username + '" AND passWord = "' + req.query.password + '" LIMIT 1;';
     // query result is list format like [ , , , , ]
     var result = await db.dbQuery(sql);// connect to which db ?
+    debug(sql);
     console.log(result);
-    // if query has no result = 'Invalid login.'
+
     if(result.length==0){
       return res.status(403).json({
         message: 'Invalid login.'
       });
     }
     // what this ? all is result[0] didn't make sense to me
-    const userData = {
-      _id: result[0].id,
-      name: result[0].username,
-      password: result[0].password
-    };
-
-
-    //console.log(userData);
-    // accessToken = "string"
-    const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
-    // refreshToken = "string"
-    const refreshToken = await jwtHelper.generateToken(userData, refreshTokenSecret, refreshTokenLife);
-    tokenList = { accessToken, refreshToken };
-    console.log("toooooooooookenList = "+tokenList);// toooooooooookenList = [object Object]
-    debug(`Gửi Token và Refresh Token về cho client...`);
-    return res.status(200).json(userData);
+ 
+    debug(result);
+    return res.status(200).json(result[0]);
   } catch (error) {
     debug(error);
     return res.status(501).json(error);
@@ -106,43 +91,7 @@ let login = async function (req, res) {
  * @param {*} req 
  * @param {*} res 
  */
-// why there can exist two refreshToken
-// let refreshToken = async (req, res) => {
-//   const refreshTokenFromClient = req.body.refreshToken;// get old token
-//   if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {// new and old token compare
-//     try {
-//       const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret);
-//       const userFakeData = decoded.data;
 
-//       debug(`Thực hiện tạo mã Token trong bước gọi refresh Token, [thời gian sống vẫn là 1 giờ.]`);
-//       const accessToken = await jwtHelper.generateToken(userFakeData, accessTokenSecret, accessTokenLife);
-//       return res.status(200).json({accessToken});
-//     } catch (error) {
-//       debug(error);
-
-//       res.status(403).json({
-//         message: 'Invalid refresh token.',
-//       });
-//     }
-//   } else {
-//     return res.status(403).send({
-//       message: 'No token provided.',
-//     });
-//   }
-// };
-
-// function dbQuery(databaseQuery) {
-//   return new Promise(data => {
-//     db.query(databaseQuery, function (error, result) { // change db->connection for your code
-//       if (error) {
-//         console.log(error);
-//         throw error;
-//       }
-//         console.log(result);
-//         data(result);
-//     });
-//   });
-// }
 
 module.exports = {
   register: register,

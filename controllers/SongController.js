@@ -37,6 +37,5 @@ let getPlaylist = async function (req, res) {
 }
 
   module.exports = {
-    getsong: getsong,
-    getPlaylist: getPlaylist
+
   }

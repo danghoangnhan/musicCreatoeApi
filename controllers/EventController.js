@@ -25,20 +25,27 @@ function getDateTime() {
  * @param {*} req 
  * @param {*} res 
  */
-
+// according Postman POST [localhost:3000/login] Send Body [account: "user1", password: "123456"]
+// assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
+// res = res.status(403).json({message: 'Invalid login.'});
+// res is req return
 let createSong = async function (req, res){
     try {
-
+        // INSERT INTO customers (Name, Address, Phone)
+        // VALUES ('姓名XXX', '地址XXX', '電話XXX');
+        //song(songId, listId, songName, tuneSet, duration(int), playCount(int), playTime, createTime, path)
         let sql = 'INSERT INTO song (listId, songName, tuneSet, duration, playCount, createTime, path) \
         VALUES ("' + req.body.listid + '", "' + req.body.songname + '", "' + req.body.tuneset + '", ' 
         + req.body.duration + ', ' + req.body.playcount + ', "' + getDateTime() + '", "' 
         + req.body.path + '");';
-
+        // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
         var result = await db.dbQuery(sql);
         return res.status(200).json({
             message: 'insert song successful',
         });
-
+        // let sql1 = 'SELECT * FROM song ORDER BY createTime DESC LIMIT 1;';
+        // var result = await dbQuery(sql1);// connect to db
+        // return res.status(200).send(result);
     }
     catch(error){
         throw error;
@@ -50,7 +57,12 @@ let createSong = async function (req, res){
  * @param {*} req 
  * @param {*} res 
  */
+// according Postman POST [localhost:3000/login] Send Body [account: "user1", password: "123456"]
+// assume var req  = [head = '......', body = {account: "user1", password: "123456"}]
+// res = res.status(403).json({message: 'Invalid login.'});
+// res is req return
 
+// req userid, playlistname
 let createPlaylist = async function (req, res){
     try {
         //playlist(listId, userId, playListName)
@@ -61,6 +73,9 @@ let createPlaylist = async function (req, res){
         return res.status(200).json({
             message: 'insert playlist successful',
         });
+        // let sql1 = 'SELECT * FROM song ORDER BY createTime DESC LIMIT 1;';
+        // var result = await dbQuery(sql1);// connect to db
+        // return res.status(200).send(result);
     }
     catch(error){
         throw error;
@@ -147,7 +162,7 @@ let getPlaylist = async function (req, res) {
     
     try {
         debug(req.body);
-        let sql = 'SELECT * FROM playlist WHERE userId = "' + req.body.userId + '";';
+        let sql = 'SELECT * FROM playlist WHERE userId = "' + req.body.userid + '";';
         console.log(sql);
         const tempt = await db.dbQuery(sql);
         return res.status(200).json(tempt);
@@ -170,7 +185,7 @@ let getPlaylistSong = async function (req, res) {
         // playlist(listId, userId, playListName)
         // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
         let sql = 'SELECT * FROM song join playlist on song.listId = playlist.listId\
-                    WHERE userId = ' + req.query.userid + ' and playlist.listId = ' 
+                    WHERE userId = ' + req.body.userid + ' and playlist.listId = ' 
                     + req.body.listid + ';';
         const tempt = await db.dbQuery(sql);
         return res.status(200).json({
