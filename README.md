@@ -50,6 +50,19 @@ login: <POST localhost:3000/login> <Params>{
     v username: user1
     v password: 123456
 }
+history
+{
+    "userid": 1
+}
+lastadd
+{
+    "userid": 1
+}
+mostplay
+{
+    "userid": 1
+}
+
 song(songId, listId, songName, tuneSet, duration(int), playCount(int), playTime, createTime, path)
 createSong
 {
