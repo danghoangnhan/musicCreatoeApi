@@ -2,7 +2,8 @@ const jwtHelper = require("../helpers/jwt.helper");
 const debug = console.log.bind(console);
 const util = require('util')
 const mysql = require('mysql')
-const db = require('./../api/db')
+const db = require('./../api/db');
+const { dbQuery } = require("./../api/db");
 
 function getDateTime() {
     var date = new Date();
@@ -188,6 +189,7 @@ let getPlaylist = async function (req, res) {
         let sql = 'SELECT * FROM playlist WHERE userId = "' + req.body.userid + '";';
         console.log(sql);
         const tempt = await db.dbQuery(sql);
+        debug(tempt)
         return res.status(200).json(tempt);
     }
     catch(error){
@@ -224,24 +226,6 @@ let getPlaylistSong = async function (req, res) {
 // SELECT t1.col ， t3.col FROM table1 join table2 ON table1.primarykey = table2.foreignkey
 //                                   join table3 ON table2.primarykey = table3.foreignkey
 
-function dbQuery(databaseQuery) {
-    return new Promise(data => {
-        db.query(databaseQuery, function (error, result) { // change db->connection for your code
-        if (error) {
-            console.log(error);
-            throw error;
-        }
-        try {
-            console.log(result);
-            data(result);
-        }
-        catch (error) {
-            data(error);
-            throw error;
-            }
-        });
-    });
-}
 
 module.exports = {
     createSong: createSong,

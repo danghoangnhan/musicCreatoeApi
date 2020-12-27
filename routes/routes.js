@@ -27,18 +27,14 @@ let initAPIs = (app) => {
   router.post("/history", HistoryController.history);
   router.post("/lastadd", LastAddController.lastAdd);
   router.post("/mostplay", MostPlayController.mostPlay);
-  //router.post("/refresh-token", AuthController.refreshToken);
-
-  // GET didn't have req.body
-
-  // All Event
-  // song(*), update playCount, playTime
   router.post("/play", EventController.play);
+<<<<<<< Updated upstream
   // this user all song
   router.post("/getSong", EventController.getSong);
   // this user all playlist
+=======
+>>>>>>> Stashed changes
   router.post("/getPlaylist", EventController.getPlaylist);
-  // this user's playlist all song
   router.post("/getPlaylistSong", EventController.getPlaylistSong);
   router.post("/createSong", EventController.createSong);
   router.post("/createPlaylist", EventController.createPlaylist);
@@ -47,10 +43,4 @@ let initAPIs = (app) => {
   router.use(AuthMiddleWare.isAuth);
   return app.use("/", router);
 }
-
-module.exports = initAPIs;// module.exports make initAPIs become a library for other .js file use
-
-/*
-Question:
-3. how to play song? what is my file?
-*/
+module.exports = initAPIs;
