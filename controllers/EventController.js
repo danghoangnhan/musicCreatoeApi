@@ -21,6 +21,7 @@ function getDateTime() {
     return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
 }
 
+
 /**
  * controller createSong
  * @param {*} req 
@@ -152,6 +153,24 @@ let play = async function (req, res) {
 }
 
 /**
+ * controller playTune
+ * @param {*} req 
+ * @param {*} res 
+ */
+let playTune = async function (req, res) {
+    try {
+        debug(req.query);
+            const result =  await db.dbQuery('SELECT * FROM tune WHERE tuneId = ' + req.body.tuneId);
+            return res.status(200).json({result});
+    }
+    catch(error){
+        return res.status(403).json({
+            message: error.message
+        });
+    }
+}
+
+/**
  * controller getSong
  * @param {*} req 
  * @param {*} res 
@@ -226,6 +245,27 @@ let getPlaylistSong = async function (req, res) {
 // SELECT t1.col ， t3.col FROM table1 join table2 ON table1.primarykey = table2.foreignkey
 //                                   join table3 ON table2.primarykey = table3.foreignkey
 
+/**
+ * controller getTune
+ * @param {*} req 
+ * @param {*} res 
+ */
+
+let getTune = async function (req, res) {
+    try {
+        // tune(tuneId, tuneName, path)
+        let sql = 'SELECT * FROM tune WHERE tuneId = ' + req.body.tuneid;
+        const tempt = await db.dbQuery(sql);
+        return res.status(200).json({
+            message: tempt
+        });
+    }
+    catch(error){
+        return res.status(403).json({
+            message: error
+        });
+    }
+}
 
 module.exports = {
     createSong: createSong,
@@ -233,7 +273,9 @@ module.exports = {
     deleteSong: deleteSong,
     deletePlaylist: deletePlaylist,
     play: play,
+    playTune: playTune,
     getSong: getSong,
     getPlaylist: getPlaylist,
     getPlaylistSong: getPlaylistSong,
+    getTune: getTune
 }

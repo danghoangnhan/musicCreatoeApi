@@ -28,6 +28,8 @@ let initAPIs = (app) => {
   router.post("/lastadd", LastAddController.lastAdd);
   router.post("/mostplay", MostPlayController.mostPlay);
   router.post("/play", EventController.play);
+  router.post("/playTune", EventController.playTune);
+  
   // this user all song
   router.post("/getSong", EventController.getSong);
   // this user all playlist
@@ -37,6 +39,7 @@ let initAPIs = (app) => {
   router.post("/createPlaylist", EventController.createPlaylist);
   router.post("/deleteSong", EventController.deleteSong);
   router.post("/deletePlaylist", EventController.deletePlaylist);
+  router.post("/getTune", EventController.getTune);
   router.use(AuthMiddleWare.isAuth);
   return app.use("/", router);
 }
