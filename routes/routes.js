@@ -34,6 +34,8 @@ let initAPIs = (app) => {
   // All Event
   // song(*), update playCount, playTime
   router.post("/play", EventController.play);
+  // this user all song
+  router.post("/getSong", EventController.getSong);
   // this user all playlist
   router.post("/getPlaylist", EventController.getPlaylist);
   // this user's playlist all song

@@ -33,11 +33,10 @@ let createSong = async function (req, res){
     try {
         // INSERT INTO customers (Name, Address, Phone)
         // VALUES ('姓名XXX', '地址XXX', '電話XXX');
-        //song(songId, listId, songName, tuneSet, duration(int), playCount(int), playTime, createTime, path)
-        let sql = 'INSERT INTO song (listId, songName, tuneSet, duration, playCount, createTime, path) \
-        VALUES ("' + req.body.listid + '", "' + req.body.songname + '", "' + req.body.tuneset + '", ' 
-        + req.body.duration + ', ' + req.body.playcount + ', "' + getDateTime() + '", "' 
-        + req.body.path + '");';
+        //song(songId, listId, songName, tuneSet, playCount(int), playTime, createTime, path)
+        let sql = 'INSERT INTO song (listId, songName, tuneSet, playCount, createTime, path) \
+        VALUES ("' + req.body.listid + '", "' + req.body.songname + '", "' + req.body.tuneset
+        + '", ' + req.body.playcount + ', "' + getDateTime() + '", "' + req.body.path + '");';
         // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
         var result = await db.dbQuery(sql);
         return res.status(200).json({
@@ -139,14 +138,38 @@ let deletePlaylist = async function (req, res) {
 let play = async function (req, res) {
     try {
         debug(req.query);
-            const result =  await db.dbQuery('SELECT * FROM song WHERE songId = ' + req.query.songId);
-                            await db.dbQuery('UPDATE song SET playCount = ' + result[0].playCount + ' WHERE songId = ' + req.query.songId);
-                            await db.dbQuery('UPDATE song SET playTime = "' + getDateTime() + '" WHERE songId = ' + req.query.songId);
+            const result =  await db.dbQuery('SELECT * FROM song WHERE songId = ' + req.body.songId);
+                            await db.dbQuery('UPDATE song SET playCount = ' + result[0].playCount + ' WHERE songId = ' + req.body.songId);
+                            await db.dbQuery('UPDATE song SET playTime = "' + getDateTime() + '" WHERE songId = ' + req.body.songId);
             return res.status(200).json({result});
     }
     catch(error){
         return res.status(403).json({
             message: error.message
+        });
+    }
+}
+
+/**
+ * controller getSong
+ * @param {*} req 
+ * @param {*} res 
+ */
+
+let getSong = async function (req, res) {
+    try {
+        // playlist(listId, userId, playListName)
+        // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
+        let sql = 'SELECT * FROM song join playlist on song.listId = playlist.listId\
+                    WHERE userId = ' + req.body.userid;
+        const tempt = await db.dbQuery(sql);
+        return res.status(200).json({
+            message: tempt
+        });
+    }
+    catch(error){
+        return res.status(403).json({
+            message: error
         });
     }
 }
@@ -185,7 +208,7 @@ let getPlaylistSong = async function (req, res) {
         // playlist(listId, userId, playListName)
         // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
         let sql = 'SELECT * FROM song join playlist on song.listId = playlist.listId\
-                    WHERE userId = ' + req.query.userid + ' and playlist.listId = ' 
+                    WHERE userId = ' + req.body.userid + ' and playlist.listId = ' 
                     + req.body.listid + ';';
         const tempt = await db.dbQuery(sql);
         return res.status(200).json({
@@ -226,6 +249,7 @@ module.exports = {
     deleteSong: deleteSong,
     deletePlaylist: deletePlaylist,
     play: play,
+    getSong: getSong,
     getPlaylist: getPlaylist,
     getPlaylistSong: getPlaylistSong,
 }

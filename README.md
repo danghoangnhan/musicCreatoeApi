@@ -2,7 +2,7 @@
 db table{
     user(userId, userName, passWord)
     playlist(listId, userId, playListName)
-    song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
+    song(songId, listId, songName, tuneSet, playCount, playTime, createTime, path)
     tune(tuneId, tuneName, path)
     playlist.userId = user.userId
     song.listId = playlist.listId
@@ -90,6 +90,10 @@ deletePlaylist
 play
 {
     "songid": 23
+}
+getSong
+{
+    "userid": 1
 }
 getPlaylist
 {
