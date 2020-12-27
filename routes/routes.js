@@ -28,12 +28,9 @@ let initAPIs = (app) => {
   router.post("/lastadd", LastAddController.lastAdd);
   router.post("/mostplay", MostPlayController.mostPlay);
   router.post("/play", EventController.play);
-<<<<<<< Updated upstream
   // this user all song
   router.post("/getSong", EventController.getSong);
   // this user all playlist
-=======
->>>>>>> Stashed changes
   router.post("/getPlaylist", EventController.getPlaylist);
   router.post("/getPlaylistSong", EventController.getPlaylistSong);
   router.post("/createSong", EventController.createSong);
