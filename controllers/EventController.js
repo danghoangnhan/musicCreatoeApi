@@ -254,10 +254,12 @@ let getPlaylistSong = async function (req, res) {
 let getTune = async function (req, res) {
     try {
         // tune(tuneId, tuneName, path)
-        let sql = 'SELECT * FROM tune WHERE tuneId = ' + req.body.tuneid;
+        debug(req.body);
+
+        let sql = 'SELECT * FROM tune WHERE tuneId = ' + req.body.tuneId;
         const tempt = await db.dbQuery(sql);
         return res.status(200).json({
-            message: tempt
+            tempt
         });
     }
     catch(error){
