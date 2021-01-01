@@ -12,10 +12,9 @@ const db = mysql.createConnection({
 
 function dbQuery(databaseQuery) {
   return new Promise(data => {
-    db.query(databaseQuery, function (error, result) { // change db->connection for your code
-      if (error) {
+    db.query(databaseQuery, function (error, result) { 
+      if (error) 
         throw error;
-      }
       try {
         data(result);
       } catch (error){
@@ -27,5 +26,6 @@ function dbQuery(databaseQuery) {
 }
 
 module.exports = {
-  dbQuery:dbQuery
+  dbQuery:dbQuery,
+  db:db
 }

@@ -11,6 +11,7 @@ const HistoryController = require("../controllers/HistoryController");// direct 
 const LastAddController = require("../controllers/LastAddController");// direct to LastAddController.js
 const MostPlayController = require("../controllers/MostPlayController");// direct to MostPlayController.js
 const SongController = require("../controllers/SongController");// direct to SongController.js
+const tuneController = require("../controllers/tuneController");
 
 /**
  * Init all APIs on your application
@@ -39,7 +40,9 @@ let initAPIs = (app) => {
   router.post("/createPlaylist", EventController.createPlaylist);
   router.post("/deleteSong", EventController.deleteSong);
   router.post("/deletePlaylist", EventController.deletePlaylist);
-  router.use(AuthMiddleWare.isAuth);
+  router.get("/DownloadTuneFile",tuneController.DownloadTuneFile);
+  router.get("/DownloadSongFile",SongController.DownloadSongFile);
+  //router.use(AuthMiddleWare.isAuth);
   return app.use("/", router);
 }
 module.exports = initAPIs;

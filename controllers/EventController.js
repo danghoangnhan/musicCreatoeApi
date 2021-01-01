@@ -161,7 +161,7 @@ let playTune = async function (req, res) {
     try {
         debug(req.query);
             const result =  await db.dbQuery('SELECT * FROM tune WHERE tuneId = ' + req.body.tuneId);
-            return res.status(200).json({result});
+            return res.status(200).json(result);
     }
     catch(error){
         return res.status(403).json({
@@ -180,12 +180,10 @@ let getSong = async function (req, res) {
     try {
         // playlist(listId, userId, playListName)
         // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
-        let sql = 'SELECT * FROM song join playlist on song.listId = playlist.listId\
-                    WHERE userId = ' + req.body.userid;
+        let sql = 'SELECT song.songId, song.songName, song.path, song.playCount,song.createTime,song.playTime,song.duration FROM song join playlist on song.listId = playlist.listId\
+                    WHERE userId = ' + req.body.userId;
         const tempt = await db.dbQuery(sql);
-        return res.status(200).json({
-            message: tempt
-        });
+        return res.status(200).json(tempt);
     }
     catch(error){
         return res.status(403).json({
@@ -205,7 +203,7 @@ let getPlaylist = async function (req, res) {
     
     try {
         debug(req.body);
-        let sql = 'SELECT * FROM playlist WHERE userId = "' + req.body.userid + '";';
+        let sql = 'SELECT * FROM playlist WHERE userId = "' + req.body.userId + '";';
         console.log(sql);
         const tempt = await db.dbQuery(sql);
         debug(tempt)
