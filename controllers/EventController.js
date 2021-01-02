@@ -37,8 +37,8 @@ let createSong = async function (req, res){
         // VALUES ('姓名XXX', '地址XXX', '電話XXX');
         //song(songId, listId, songName, tuneSet, playCount(int), playTime, createTime, path)
         let sql = 'INSERT INTO song (listId, songName, tuneSet, playCount, createTime, path) \
-        VALUES ("' + req.body.listid + '", "' + req.body.songname + '", "' + req.body.tuneset
-        + '", ' + req.body.playcount + ', "' + getDateTime() + '", "' + req.body.path + '");';
+        VALUES ("' + req.body.listId + '", "' + req.body.songName + '", "' + req.body.tuneSet
+        + '", ' + req.body.playCount + ', "' + getDateTime() + '", "' + req.body.path + '");';
         // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
         var result = await db.dbQuery(sql);
         return res.status(200).json({
@@ -68,7 +68,7 @@ let createPlaylist = async function (req, res){
     try {
         //playlist(listId, userId, playListName)
         let sql = 'INSERT INTO playlist (userId, playListName) \
-        VALUES (' + req.body.userid + ', "' + req.body.playlistname + '");';
+        VALUES (' + req.body.userId + ', "' + req.body.playListName + '");';
         // result is .json file result[0]{"key": value, "key": value, "key": value, ......}
         var result = await db.dbQuery(sql);
         return res.status(200).json({
@@ -94,7 +94,7 @@ let deleteSong = async function (req, res) {
         // playlist(listId, userId, playListName)
         // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
         let sql = 'DELETE FROM song \
-                    WHERE songId = ' + req.body.songid + ';';
+                    WHERE songId = ' + req.body.songId + ';';
         var result = await db.dbQuery(sql);
         return res.status(200).json({
             message: 'delete song successful',
@@ -116,7 +116,7 @@ let deletePlaylist = async function (req, res) {
         // playlist(listId, userId, playListName)
         // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
         let sql = 'DELETE FROM playlist\
-                    WHERE listId = ' + req.body.listid + ';';
+                    WHERE listId = ' + req.body.listId + ';';
         var result = await db.dbQuery(sql);
         return res.status(200).json({
             message: 'delete playlist successful',

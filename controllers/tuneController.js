@@ -10,6 +10,8 @@ let DownloadTuneFile = async function (req, res) {
       var result = await db.dbQuery(sql);
       debug(sql);
       console.log(result);
+      // tune(tuneId, tuneName, path)
+      // result[0] = [{tuneId:value, tuneName:value, path:value}, {}, {}]
       //const file = `${__dirname}/upload-folder/`+result.tuneName+`.mid`;
       const file = `.././musicCreatoeApi/music/tune/`+result[0].tuneName+`.mid`;
       return res.status(200).download(file);
