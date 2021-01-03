@@ -1,22 +1,26 @@
 
 const debug = console.log.bind(console);
-const util = require('util')
-const db = require('./../api/db')
+const db = require('./../api/db');
+var path = require('path');
+var mime = require('mime');
+var fs = require('fs');
 
 let DownloadTuneFile = async function (req, res) {
     try {    
-      debug(req.query);
       let sql = 'SELECT * FROM tune WHERE tuneId = ' + req.query.tuneId;
       var result = await db.dbQuery(sql);
-      debug(sql);
-      console.log(result);
-      // tune(tuneId, tuneName, path)
-      // result[0] = [{tuneId:value, tuneName:value, path:value}, {}, {}]
-      //const file = `${__dirname}/upload-folder/`+result.tuneName+`.mid`;
-      const file = `.././musicCreatoeApi/music/tune/`+result[0].tuneName+`.mid`;
-      return res.status(200).download(file);
+      const file = ".././musicCreatoeApi/music/tune/output/"+result[0].tuneName+".mp3";
+
+      // var filename = path.basename(file);
+      // var mimetype = mime.lookup(file);
+
+      // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+      // res.setHeader('Content-type', mimetype);
+    
+      // var filestream = fs.createReadStream(file);
+      // filestream.pipe(res);
+      return res.download(file);
     } catch (error) {
-      debug(error);
       return res.status(501).json(error);
     }
   };
