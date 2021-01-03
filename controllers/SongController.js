@@ -57,10 +57,10 @@ let uploadSongFile = async function (req, res) {
       debug(req.body);
       // song(songId, listId, songName, path)
       let sql = 'INSERT INTO song (listId, songName, path)\
-      VALUES(' + req.body.listId + ', "' + req.body.songName + '")';
-      const tempt = await db.dbQuery(sql);
+      VALUES(' + req.body.listId + ', "' + req.body.songName + '", "' + req.body.path + '");';
+      var result = await db.dbQuery(sql);
       return res.status(200).json({
-          tempt
+          message: 'insert song successful',
       });
   }
   catch(error){
