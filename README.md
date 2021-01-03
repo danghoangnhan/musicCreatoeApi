@@ -8,12 +8,23 @@ db table{
     song.listId = playlist.listId
 }
 
+db table{
+    user(userId, userName, passWord)
+    playlist(listId, userId, playListName)
+    song(songId, listId, songName, path)
+    tune(tuneId, tuneName, path)
+    playlist.userId = user.userId
+    song.listId = playlist.listId
+}
+
 Mysql
 rename attribute: ALTER TABLE user CHANGE password passWord varchar(50);
 delete attribute: ALTER TABLE user DROP access_token;
 add attribute: ALTER TABLE Customers
                ADD Email varchar(255);
 delete: DELETE FROM customers WHERE Name='alex';
+insert: INSERT INTO table_name (column1, column2, column3...)
+        VALUES (value1, value2, value3...);
 
 CREATE TABLE customers (
     C_Id INT AUTO_INCREMENT,

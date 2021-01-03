@@ -42,6 +42,7 @@ let initAPIs = (app) => {
   router.post("/deletePlayList", EventController.deletePlaylist);
   router.get("/DownloadTuneFile",tuneController.DownloadTuneFile);
   router.get("/DownloadSongFile",SongController.DownloadSongFile);
+  router.post("/uploadSongFile", SongController.uploadSongFile);
   //router.use(AuthMiddleWare.isAuth);
   return app.use("/", router);
 }

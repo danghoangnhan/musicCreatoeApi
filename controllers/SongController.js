@@ -2,7 +2,8 @@ const jwtHelper = require("../helpers/jwt.helper");
 const debug = console.log.bind(console);
 const util = require('util')
 const mysql = require('mysql')
-const db = require('./../api/db')
+const db = require('./../api/db');
+const { request } = require("http");
 
 // what this ?
 /**
@@ -48,7 +49,26 @@ let DownloadSongFile = async function (req, res) {
     debug(error);
     return res.status(501).json(error);
   }
-};
+}
+
+let uploadSongFile = async function (req, res) {
+  try {
+      // tune(tuneId, tuneName, path)
+      debug(req.body);
+      // song(songId, listId, songName, path)
+      let sql = 'INSERT INTO song (listId, songName, path)\
+      VALUES(' + req.body.listId + ', "' + req.body.songName + '")';
+      const tempt = await db.dbQuery(sql);
+      return res.status(200).json({
+          tempt
+      });
+  }
+  catch(error){
+      return res.status(403).json({
+          message: error
+      });
+  }
+}
 // what this ?
 /**
  * controller getsong
@@ -56,5 +76,6 @@ let DownloadSongFile = async function (req, res) {
  * @param {*} res 
  */
   module.exports = {
-    DownloadSongFile : DownloadSongFile
+    DownloadSongFile : DownloadSongFile,
+    uploadSongFile: uploadSongFile
   }

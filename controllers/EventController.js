@@ -227,8 +227,8 @@ let getPlaylistSong = async function (req, res) {
         // playlist(listId, userId, playListName)
         // song(songId, listId, songName, tuneSet, duration, playCount, playTime, createTime, path)
         let sql = 'SELECT * FROM song join playlist on song.listId = playlist.listId\
-                    WHERE userId = ' + req.body.userid + ' and playlist.listId = ' 
-                    + req.body.listid + ';';
+                    WHERE userId = ' + req.body.userId + ' and playlist.listId = ' 
+                    + req.body.listId + ';';
         const tempt = await db.dbQuery(sql);
         return res.status(200).json({
             message: tempt
